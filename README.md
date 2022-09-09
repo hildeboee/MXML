@@ -4,6 +4,7 @@ Last update added functionality for:
 - reading XML files for placenames
 - single-CMIF output
 - reading chronology file
+
 And was really a refactor of the entire script's core.
 
 In progress:
