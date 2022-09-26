@@ -1,4 +1,4 @@
-# MunchXMLMuncher 1.0 "Pescetarius" Instructions
+# MunchXMLMuncher 1.b.1 - Instructions
 ## Introduction
 Developed by research assistant Loke Sjølie for the University of Oslo
 
@@ -41,17 +41,17 @@ The script searches for and will use a file named Kronologi_Munchs_brev with the
 If a chronology file is found, the script will index all letters included and replace the dates found in the register/correspondence file with the dates found in the chronology file if such a replacement is possible.
 
 ##### Info: Naming conventions
-The chronology file's document IDs are consistently inconsistent with the IDs found elsewhere. Thus, the script **expects** to see names in the format "MM N 723", "PN 272" as seen in the provided chronology file. I cannot guarantee that the script will work properly without modification if these IDs are made whole.
+The chronology file's document IDs are consistently inconsistent with the IDs found elsewhere. Thus, the script **expects** to see names in the format "MM N 723", "PN 272" as seen in the provided chronology file. I cannot guarantee that the script will work properly without modification if these IDs are made to match the IDs elsewhere.
 
 ##### Info: Date conventions
-At present, the chronology file's dates follow no convention and adhere to neither rules or law. There are more than ten different formats in use, some of which are more sensible than others. The script uses a nested decision tree to figure out what sort of date it's looking at in this specific order: datetime, DD.MM.YYYY, MM.YYYY, MM.YYYY/MM.YYYY (range) or MM.YYYY-MM.YYYY (range), MM.-MM.YYYY (range), YYYY, YYYY-YYYY (range). Dates that do not follow any of these formats are **dropped**. This means that dates that cannot possibly be guessed by a machine without considerable extra work, like "23.07.1895/1896" or "2[6/7].12.1912", are expunged. At time of writing, this excludes 20 dates. If the script locates "uncertain" dates expressed by a ? character, the date is trimmed incrementally (D?.MM.YYYY becomes MM.YYYY, ??.YYYY becomes YYYY). If a complete 4-digit year is not found, the entire date is expunged. Be advised that the script does **not** check if the date is between 1860-1950.
+The script uses a nested decision tree to figure out what sort of date it's looking at in this specific order: datetime, DD.MM.YYYY, MM.YYYY, MM.YYYY/MM.YYYY (range) or MM.YYYY-MM.YYYY (range), MM.-MM.YYYY (range), YYYY, YYYY-YYYY (range). Dates that do not follow any of these formats are **dropped**. This means that dates that cannot possibly be guessed by a machine without considerable extra work, like "23.07.1895/1896" or "2[6/7].12.1912", are expunged. At time of writing, this excludes 20 dates. If the script locates "uncertain" dates expressed by a ? character, the date is trimmed incrementally (D?.MM.YYYY becomes MM.YYYY, ??.YYYY becomes YYYY). If a complete 4-digit year is not found, the entire date is expunged. Be advised that the script does **not** check if the date is between 1860-1950.
 
 Any acceptable date (has at least YYYY, matches a date format that is accounted for) is transformed to match the format YYYY-MM-DD and set as exact date or a date range.
 
 #### Placenames
 The script searches for a folder named "xml-filer" located in the same folder as itself AND a spreadsheet named "ID_sted-verdier.xlsx". You **must** provide the spreadsheet if you wish to use this functionality, as well as *n* XML files in xml-filer. If found, the script will scan every XML file in that folder (recursive; subfolders are allowed, as long as the top-level folder is named xml-filer) expecting to see a series of letter files. 
 
-A (currently disabled) option sets the script to look for **address** elements. Acceptable attributes are @recipient and @sender. Instances where the attribute(s) differ from recipient/sender or an attribute is missing are missing are ignored. There can be multiple recipients and/or multiple senders. There can be multiple address @sender elements referring to the same sender. There may or may not be a name/ID for the sender/recipient in the address element(s). There can be several placenames in each address element. There may not be an address in the address element. There may be an organization assigned as an address - these are ignored because their IDs do not correspond to anything in the provided ID>string translation spreadsheet. The script searches recursively (required because there is *n* addressline elements between any given address and its placename(s)) through the child elements of the address element until it locates a placename with an @key attribute to harvest. **At the moment, this option is disabled by default due to the inability to guarantee that the results are accurate.**
+A (currently disabled) option sets the script to look for **address** elements. Acceptable attributes are @recipient and @sender. Instances where the attribute(s) differ from recipient/sender or an attribute is missing are missing are ignored. There can be multiple recipients and/or multiple senders. There can be multiple address @sender elements referring to the same sender. There may or may not be a name/ID for the sender/recipient in the address element(s). There can be several placenames in each address element. There may not be an address in the address element. There may be an organization assigned as an address - these are ignored because their IDs do not correspond to anything in the provided ID>string translation spreadsheet. The script searches recursively (required because there is *n* addressline elements between any given address and its placename(s)) through the child elements of the address element until it locates a placename with an @key attribute to harvest. **At the moment, this option is disabled by default. Do not enable it unless you know what you are doing.**
 
 Some XML files have a **dateline** element. ~~If the script finds an address for the sender in the address element(s), the dateline element is ignored. If sender address is missing entirely,~~ the script will search for a dateline element, which may or may not have a placename. The script only looks for a sender because the dateline element is intended to only ever represent the sender's address and date. If the dateline element has a placename element (recursively, again), the script will assume that the first @key attribute of this placename element is the address ID of the sender.
 
@@ -73,12 +73,10 @@ The script does not fetch a UID for placenames at time of writing. The CMIF docu
 
 The script does not evaluate whether a given date is "certain" or not. It assumes that the dates provided are certain enough (when they form valid dates).
 
-The script disagrees heavily with the way dates are annotated in the correspondence.xml file and will report over 100 data errors when this file is in use.
-
 ### Todo
 Further improvement may include placing the harvested placenames, dates and so forth in a file after running the script to facilitate quicker re-runs. However, this may confuse some users, and ease of use generally trumps speed.
 
 ## Known data quality issues
-The date formatting in the project's files is not excellent. MM_K4110 is an example of a document that's not registered correctly.
+The correspondence file has a lot of letters that don't have a year. These are considered to be undated.
 
 There are many target refs that exist but do not have a value.
