@@ -67,6 +67,16 @@ If the script is able to locate a placename in the expected format (address, dat
 The MXMLM script will safely copy the register_tei and correspondence XML files used to a separate directory named MXML (version) (date yyyy-mm-dd). If the files are older (by last modified date) than the files it already has in /sourcefiles (created by the script), it will use the NEWER files. To bypass this behaviour, simply delete the sourcefiles folder or place a copy of the script in a flat directory with only the register_tei.xml and correspondence.xml files you wish to use.
 
 ## Known bugs and issues
+### Major
+The script incorrectly identifies some invalid dates as valid (03-02-20-03-1850, etc). This is most likely caused by a failure to restrict the RegEx function that validates dates. I will reinforce validation in the next update.
+
+The script incorrectly reads some date spans (1800-1805) as a single point date. This is again probably due to a RegEx error.
+
+The script adds many empty correspAction elements. This is most likely caused by an error in creating these elements, rather than editing them. Todo: collect some sample IDs of where this occurs and try to identify exactly what's going on.
+
+The dummy element doesn't delete itself yet. There's a text element missing around the body element?
+
+### Minor
 The script does not fetch external UIDs for persons other than Edvard Munch. This would entail using the VIAF API to get IDs on everyone.
 
 The script does not fetch a UID for placenames at time of writing. The CMIF documentation suggests Geonames as an acceptable source of placename UIDs.
