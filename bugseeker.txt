@@ -1,0 +1,8 @@
+FIXED:
+MM_N3242, PN0045, PN1191, PN1217 (...). Date in the format YEAR-YEAR was incorrectly registered as an exact date. The format is now registered correctly.
+
+BUG:
+MM_K0279 registers its date twice. Wwwwhyyy...? It is NOT in the placenamedict. It is sourced from correspondence. Does not occur to ALL elements.
+
+BUG:
+CorrespAction elements are added in the correspondence without anything being added within them. What's this, why's this. Happens in MM_K2564 for instance. - This is caused by MULTI-AUTHORSHIP. MM_K2564 has two senders, the names of which are contained inside a ref tag (each its own) without any reference link. We need to look at for each in item @n sender.
