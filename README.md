@@ -24,7 +24,7 @@ There is a text file by the name config.ini alongside the script. Before running
 3. Change the publicationStatementFull variable. This variable should contain a "Full bibliographical statement of the scholarly edition or repository where this file points to"
 4. Change publisherURL, publisherName, cmifURL, cmifTitle, typeOfBibl as required
 
-The script currently supports a **single** publisher and a **single** editor. All options are found at the top of the script.
+The script currently supports a **single** publisher and a **single** editor.
 
 ## Required files
 To run this script, you will **require** the following in a folder:
