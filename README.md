@@ -1,4 +1,4 @@
-# MunchXMLMuncher 1.0 "Pescetarius" Instructions
+# MunchXMLMuncher 1.2.0 ALPHA
 ## Introduction
 Developed by research assistant Loke Sjølie for the University of Oslo
 
