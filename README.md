@@ -88,6 +88,6 @@ The script does not fetch a UID for placenames at time of writing. The CMIF docu
 The script does not evaluate whether a given date is "certain" or not. It assumes that the dates provided are certain enough (when they form valid dates).
 
 ## Known data quality issues
-The date formatting in the project's files is not excellent. MM_K4110 is an example of a document that's not registered correctly.
+MM_K4110 is an example of a document that's not registered correctly.
 
 There are many target refs that exist but do not have a value.
