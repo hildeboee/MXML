@@ -1,11 +1,17 @@
 # MunchXMLMuncher 2
 Developed by research assistant Loke Sjølie for the University of Oslo
-## Version 2 changelog
+## Changelog
+### Version 2 pre-release (current)
+1. **Extreme** overall performance increase! Running the script went from taking 18 minutes to 30 seconds.
+2. New and more accurate method of constructing CMIF file.
+3. Fixed the dummy and empty elements bugs.
+TODO: clean up and prepare an ordinary .py script that runs without fuss.
+
+### Version 2 alpha
 1. Significant performance and completeness increase in fetching placenames
 2. Significantly increased number of dates included from the chronology, **with some caveats**: the chronology file now requires mostly-correct document/object ID formatting. See optional files - chronology for details.
 3. Combined Preprocessor and Core scripts for ease of use
 4. Integrated place and date augmentation into JSON data creation for correspondence and register_tei
-5. Dramatically increased performance of CMIF/XML creation
 
 ## Introduction
 This script takes 1-2 files in eMunch's TEI/XML format and converts them to a complete CMIF/TEIXML file. The script is heavily customized to the project's specifications, and is incredibly unlikely to produce anything worthwhile with files that do not match their exact XML specifications.
@@ -20,19 +26,20 @@ The script targets documents that have been tagged with **"brev"** or **"letter"
 
 Optional files enable the script to get updated dates from a chronology file and/or placename augmentation. See section *Optional files* below for in-depth explanation.
 
-MXMLM has three parts: the Preprocessor, Core and CMIF Production scripts all work together to create a tailored CMIF file. ~~Alternatively, you can use MXMLM Complete as an all-in-one.~~
+MXMLM has three parts: the Preprocessor, Core and CMIF Production scripts all work together to create a tailored CMIF file.
+### MXMLM Complete
+From version 2 onwards, MXMLM has reintegrated all three parts described below.
 
-### MXMLM Preprocessor
+#### MXMLM Preprocessor
 The Preprocessor script scrapes, cleans and transforms data from the optional files to prepare them for use in the core script. The preprocessor script **must** be run before MXML Core if you include any of the optional files. Once run, you do **not** need to run it again until you add, remove or update any of the optional files. See section *Optional files* below.
 
-### MXMLM Core (part of Preprocessor in version 2)
+#### MXMLM Core
 The Core script scrapes data from the register_tei.xml and/or correspondence.xml files. Please note that these files MUST be named properly for the script to function. The script produces an updated JSON data file that is ready to be converted into CMIF. If the script finds the Preprocessor's output (in the same folder), it'll create an additional data set with any modifications from preprocessing integrated.
 
-### MXMLM Production
-The Production script takes the output of Preprocessor and Core and creates a CMIF-compliant XML file.
+New in version 2: these have been effectivised and now run at extremely high superspeeds.
 
-### MXMLM Complete (TBA)
-~~The Complete script includes all three of the above.~~
+#### MXMLM Production
+The Production script takes the output of Preprocessor and Core and creates a CMIF-compliant XML file.
 
 ## Required variables and metadata
 There is a text file by the name config.ini alongside the script. Before running the script, you **must** open this file **in NOTEPAD** (or an appropriate IDE) and do the following:
@@ -80,10 +87,8 @@ If the script is able to locate a placename in the expected format (address, dat
 ## Simple use case instructions (modular)
 1. Place the MXMLM scripts in a folder that contains **at least one** required file (see header REQUIRED FILES).
 2. If desired, place optional files and/or folders beside the script (see subheader OPTIONAL FILES). Remember that some options have dependencies. Ensure that the chronology file has correctly formatted object/document IDs.
-3. **IMPORTANT!** For placename and date augmentation via XML files and/or chronology file, you MUST run the MXML Preprocessor script **if it has not already been run**. If MXML Preprocessor is not run, MXML Core will *not* create placenames or update dates from a chronology file. It must be run *any time you add, change or remove data from the source XML files, the placename files, or the chronology file(s)*. If you've already run the preprocessor with the current data set, go to the next step.
-4. Run MXML Core. This is *expected* to take a while.
-5. After the script has finished, run MXML Production.
-5. The resulting CMIF file is placed in the output subfolder upon script completion.
+3. Run MXMLM via python.
+4. The resulting CMIF file is placed in the output subfolder upon script completion.
 
 ## Known bugs and issues
 The script does not fetch external UIDs for persons other than Edvard Munch. This would entail using the VIAF API to get IDs on everyone.
