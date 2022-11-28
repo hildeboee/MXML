@@ -18,7 +18,7 @@ This script takes 1-2 files in eMunch's TEI/XML format and converts them to a co
 
 The script targets documents that have been tagged with **"brev"** or **"letter"** (excluding, as a rule, drafts), and extracts from these:
 1. Document ID, which is extrapolated to form an eMunch URL
-2. Document Author, with VIAF ID where applicable
+2. Document Author
 3. Document Authored Date, which is converted to YYYY-MM-DD (or YYYY-MM, or YYYY) or a range that can be from or from-to or to.
 4. Document Recipient(s), names and IDs
 
@@ -26,17 +26,14 @@ The script targets documents that have been tagged with **"brev"** or **"letter"
 
 Optional files enable the script to get updated dates from a chronology file and/or placename augmentation. See section *Optional files* below for in-depth explanation.
 
-MXMLM has three parts: the Preprocessor, Core and CMIF Production scripts all work together to create a tailored CMIF file.
 ### MXMLM Complete
-From version 2 onwards, MXMLM has reintegrated all three parts described below.
+MXMLM has three parts: the Preprocessor, Core and CMIF Production scripts. All these work together to create a tailored CMIF file. From version 2 onwards, MXMLM is once again a single, integrated script.
 
 #### MXMLM Preprocessor
-The Preprocessor script scrapes, cleans and transforms data from the optional files to prepare them for use in the core script. The preprocessor script **must** be run before MXML Core if you include any of the optional files. Once run, you do **not** need to run it again until you add, remove or update any of the optional files. See section *Optional files* below.
+The Preprocessor script scrapes, cleans and transforms data from the optional files to prepare them for use in the core script. See section *Optional files* below.
 
 #### MXMLM Core
-The Core script scrapes data from the register_tei.xml and/or correspondence.xml files. Please note that these files MUST be named properly for the script to function. The script produces an updated JSON data file that is ready to be converted into CMIF. If the script finds the Preprocessor's output (in the same folder), it'll create an additional data set with any modifications from preprocessing integrated.
-
-New in version 2: these have been effectivised and now run at extremely high superspeeds.
+The Core script scrapes data from the register_tei.xml and/or correspondence.xml files. Please note that these files MUST be named properly for the script to function. The script produces an updated JSON data file for each that is ready to be converted into CMIF. If the script finds the Preprocessor's output (in the same folder), it'll create an additional data set with any modifications from preprocessing integrated.
 
 #### MXMLM Production
 The Production script takes the output of Preprocessor and Core and creates a CMIF-compliant XML file.
@@ -55,13 +52,13 @@ To run this script, you will **require** the following in a folder:
 
 A version of register_tei.xml and/or a version of correspondence.xml
 
-The MXMLM script files
+The MXMLM2 script file
 
 (You'll also need Python.)
 
 I **recommend** using Windows. The script has been tested on Windows.
 
-### Optional files (used with MXMLM Preprocessor)
+### Optional files
 #### Chronology
 MXMLM Preprocessor searches for and will use a file named Kronologi_Munchs_brev with the .xlsx filetype if it exists in the same folder as the script (or the source subfolder it creates). As long as the file contains the exact phrase Kronologi_Munchs_brev and is .xlsx, it'll be found (example: Kronologi_Munchs_brev_20220831.xlsx WILL be found, while Kronologi_brev.xlsx will NOT be found). If there are multiple files matching the criteria, the last modified file will be used (possibly Windows-dependent).
 
@@ -73,7 +70,7 @@ If a chronology file is found, the script will index all letters included and re
 In cases where the object ID is too short (PN50), zeroes (0) are added immediately after the prefix until it complies (PN0050). In cases where the object ID is too long (No-MM_X012345678) and there is a comma, **everything** to the right of the comma is expunged. If the string is too long *and* the string has a No-prefix, characters matching 0 are removed from immediately after the prefix until it complies (this is common). Once the prefix is not followed by 0 or the string is 11 characters long, characters are removed from the end of the string until it complies (resulting in No-MM_X1234). The string is then checked for compliance: it must be 6 or 11 characters long, and the last 4 characters must be numeric.
 
 ##### Info: Date conventions
-The script instantly accepts datetime-formatted dates. If the script locates "uncertain" dates expressed by a ? character, the date is trimmed incrementally (D?.MM.YYYY becomes MM.YYYY, ??.YYYY becomes YYYY). If a date contains the character -, it is assigned as a range date and is split in from and to dates. The script will correct from-to dates where the to date is more specific than the from date, as in 11-12.2000 -> 11.2000-12.2000. *Note that the script will alert but **not** correct date ranges where the from date is more specific, as in 11.2000-12. This is a feature, not a bug.* Date ranges are stored in the format FROM%TO. If the date does not contain the character -, it is formatted as a single-instance date (YYYY.MM.DD). 
+The script instantly accepts datetime-formatted dates. If the script locates "uncertain" dates expressed by a ? character, the date is trimmed incrementally (D?.MM.YYYY becomes MM.YYYY, ??.YYYY becomes YYYY). If a date contains the character -, it is assigned as a range date and is split in from and to dates. The script will correct from-to dates where the to date is more specific than the from date, as in 11-12.2000 -> 11.2000-12.2000. *Note that the script will alert but **not** correct date ranges where the from date is more specific, as in 11.2000-12. This is a feature, not a bug.* Date ranges are stored in the format FROM%TO in the datasets. If the date does not contain the character -, it is formatted as a single-instance date (YYYY.MM.DD). 
 
 All dates are fetched whole, including the day and/or the month wherever possible: the minimum requirement is a 4-digit year. If a complete 4-digit long year is not found, the entire date is expunged. Be advised that the script does **not** validate whether the date is between 1860-1950.
 
@@ -87,17 +84,12 @@ If the script is able to locate a placename in the expected format (address, dat
 ## Simple use case instructions (modular)
 1. Place the MXMLM scripts in a folder that contains **at least one** required file (see header REQUIRED FILES).
 2. If desired, place optional files and/or folders beside the script (see subheader OPTIONAL FILES). Remember that some options have dependencies. Ensure that the chronology file has correctly formatted object/document IDs.
-3. Run MXMLM via python.
+3. Run MXMLM2 via python.
 4. The resulting CMIF file is placed in the output subfolder upon script completion.
 
 ## Known bugs and issues
-The script does not fetch external UIDs for persons other than Edvard Munch. This would entail using the VIAF API to get IDs on everyone.
+The script does not fetch external UIDs. This would entail using the VIAF API to get IDs on everyone - which is fine. But you'd have to make sure that it's the *correct* IDs, which is.. difficult to do automatically, and time-consuming to do manually.
 
 The script does not fetch a UID for placenames at time of writing. The CMIF documentation suggests Geonames as an acceptable source of placename UIDs.
 
-The script does not evaluate whether a given date is "certain" or not. It assumes that the dates provided are certain enough (when they form valid dates).
-
-## Known data quality issues
-MM_K4110.
-
-There are many target refs that exist but do not have a value.
+The script does not evaluate whether a given date is "certain" or not beyond applying a date range or an "exact" date. It assumes that the dates provided are certain enough (when they form valid dates).
