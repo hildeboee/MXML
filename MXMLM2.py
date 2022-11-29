@@ -435,7 +435,7 @@ with open("Preprocessor Report.txt", "w", encoding="utf-8") as output_file:
 ## Main file: Correspondence
 # Because Correspondence and Register_Tei are slightly different, I'm writing specific code for each despite
 # the fact that it's somewhat WET programming.
-
+mmmm = [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90]
 if os.path.isfile("correspondence.xml"):
     CorrespDict = collections.defaultdict(dict)
     print("CorrespDict initiated")
@@ -447,7 +447,6 @@ if os.path.isfile("correspondence.xml"):
     # Don't worry about the error screaming about Unicode markup being provided twice
     comments = 0
     commentDocs = 0
-    mmmm = [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90]
     for comment in soup.findAll(string=lambda text: isinstance(text, Comment)):
         if "xml:id=\"" in comment:
             commentDocs+=1
@@ -523,8 +522,6 @@ if os.path.isfile("correspondence.xml"):
                     #print(f"??? {targetRef}") 
             else: # Default to persName if we can't tell which it is
                 docAuthorTypes.append("persName")
-            
-            
             
             
             # Data cleaning
