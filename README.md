@@ -1,11 +1,16 @@
 # MunchXMLMuncher 2
 Developed by research assistant Loke Sjølie for the University of Oslo
-## Changelog
-### Version 2 pre-release (current)
-1. **Extreme** overall performance increase! Running the script went from taking 18 minutes to 30 seconds.
+## Changelog (v2)
+### Version 2.0 release (current)
+1. Cleaned up the script and converted it to regular .py
+2. Enabled automatic installation of dependencies
+3. CMIF correspAction element is now created with persName/orgName where appropriate *if* the distinction is visible in the source data.
+4. Enabled ref attribute for entities that have this value. Edvard Munch has a custom ref attribute.
+
+### Version 2 release candidate
+1. **Extreme** overall performance increase! Running the whole script went from taking 18 minutes to 30 seconds.
 2. New and more accurate method of constructing CMIF file.
-3. Fixed the dummy and empty elements bugs.
-TODO: clean up and prepare an ordinary .py script that runs without fuss.
+3. Fixed the dummy and empty elements bugs. Note: the "bug" present in MM_K0279's date is due to erroneous data entry.
 
 ### Version 2 alpha
 1. Significant performance and completeness increase in fetching placenames
@@ -22,20 +27,17 @@ The script targets documents that have been tagged with **"brev"** or **"letter"
 3. Document Authored Date, which is converted to YYYY-MM-DD (or YYYY-MM, or YYYY) or a range that can be from or from-to or to.
 4. Document Recipient(s), names and IDs
 
-... and then places these in a hierarchy: <CorrespDesc(DocumentID)><*Author*><*Date*/><*/Author*><*Recipient*(s)/>.
+... and then places these in a hierarchy: <CorrespDesc(DocumentID)><CorrespAction*Author*(s)><*Date*/><*/Author*><CorrespAction*Recipient*(s)/>. No date is available for the recipient at this time, though CMIF will accept it if you do locate some.
 
 Optional files enable the script to get updated dates from a chronology file and/or placename augmentation. See section *Optional files* below for in-depth explanation.
 
-### MXMLM Complete
+### MXMLM2
 MXMLM has three parts: the Preprocessor, Core and CMIF Production scripts. All these work together to create a tailored CMIF file. From version 2 onwards, MXMLM is once again a single, integrated script.
 
-#### MXMLM Preprocessor
 The Preprocessor script scrapes, cleans and transforms data from the optional files to prepare them for use in the core script. See section *Optional files* below.
 
-#### MXMLM Core
 The Core script scrapes data from the register_tei.xml and/or correspondence.xml files. Please note that these files MUST be named properly for the script to function. The script produces an updated JSON data file for each that is ready to be converted into CMIF. If the script finds the Preprocessor's output (in the same folder), it'll create an additional data set with any modifications from preprocessing integrated.
 
-#### MXMLM Production
 The Production script takes the output of Preprocessor and Core and creates a CMIF-compliant XML file.
 
 ## Required variables and metadata
@@ -50,13 +52,9 @@ The script currently supports a **single** publisher and a **single** editor.
 ## Required files
 To run this script, you will **require** the following in a folder:
 
-A version of register_tei.xml and/or a version of correspondence.xml
+A version of register_tei.xml and/or a version of correspondence.xml and the MXMLM2 script file.
 
-The MXMLM2 script file
-
-(You'll also need Python.)
-
-I **recommend** using Windows. The script has been tested on Windows.
+You'll also need Python - it's been tested with a normal Anaconda install and works fine. I **recommend** using Windows. The script has been tested on Windows. I do not guarantee that it will work on any other operating system.
 
 ### Optional files
 #### Chronology
@@ -81,11 +79,11 @@ The script will search for a dateline element, which may or may not have a place
 
 If the script is able to locate a placename in the expected format (address, dateline), the value of the @key attribute will be used to compare with ID_sted-verdier.xlsx. The address/place string associated with the @key value is harvested and used as an address element. Otherwise, no place element is appended.
 
-## Simple use case instructions (modular)
+## Instructions for use
 1. Place the MXMLM scripts in a folder that contains **at least one** required file (see header REQUIRED FILES).
 2. If desired, place optional files and/or folders beside the script (see subheader OPTIONAL FILES). Remember that some options have dependencies. Ensure that the chronology file has correctly formatted object/document IDs.
-3. Run MXMLM2 via python.
-4. The resulting CMIF file is placed in the output subfolder upon script completion.
+3. Run MXMLM2 via python (python "MXMLM2.py"). The script SHOULD take care of installing required packages on its own.
+4. The resulting CMIF file is placed in the output subfolder upon script completion, as well as numerous other data sets.
 
 ## Known bugs and issues
 The script does not fetch external UIDs. This would entail using the VIAF API to get IDs on everyone - which is fine. But you'd have to make sure that it's the *correct* IDs, which is.. difficult to do automatically, and time-consuming to do manually.
@@ -93,3 +91,5 @@ The script does not fetch external UIDs. This would entail using the VIAF API to
 The script does not fetch a UID for placenames at time of writing. The CMIF documentation suggests Geonames as an acceptable source of placename UIDs.
 
 The script does not evaluate whether a given date is "certain" or not beyond applying a date range or an "exact" date. It assumes that the dates provided are certain enough (when they form valid dates).
+
+When run without changes, MM_K0279 registers its date twice. This is because the item in question has "<date type="year" when="1937-04-23">23.04.1937</date>" registered its full date in the @when attribute of the year element. Cause is erroneous data entry. I have corrected this error in the provided files, but the user is advised to change their own files to not imply that a year-month-day date is a year.
