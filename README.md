@@ -1,4 +1,4 @@
-# MunchXMLMuncher 2
+# MunchXMLMuncher 2.0.1
 Developed by research assistant Loke Sjølie for the University of Oslo
 ## Changelog (v2)
 ### Version 2.0 release (current)
@@ -6,7 +6,8 @@ Developed by research assistant Loke Sjølie for the University of Oslo
 2. Enabled automatic installation of dependencies
 3. CMIF correspAction element is now created with persName/orgName where appropriate *if* the distinction is visible in the source data.
 4. Enabled ref attribute for entities that have this value. Edvard Munch has a custom ref attribute.
-
+#### 2.0.1
+1. Fixed an error that would throw an exception if script was run without correspondence.xml
 ### Version 2 release candidate
 1. **Extreme** overall performance increase! Running the whole script went from taking 18 minutes to 30 seconds.
 2. New and more accurate method of constructing CMIF file.
