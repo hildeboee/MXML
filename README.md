@@ -81,16 +81,18 @@ The script will search for a dateline element, which may or may not have a place
 If the script is able to locate a placename in the expected format (address, dateline), the value of the @key attribute will be used to compare with ID_sted-verdier.xlsx. The address/place string associated with the @key value is harvested and used as an address element. Otherwise, no place element is appended.
 
 ## Instructions for use
-1. Place the MXMLM scripts in a folder that contains **at least one** required file (see header REQUIRED FILES).
-2. If desired, place optional files and/or folders beside the script (see subheader OPTIONAL FILES). Remember that some options have dependencies. Ensure that the chronology file has correctly formatted object/document IDs.
+1. Place the MXMLM2 script in a folder that contains **at least one** required file (see header REQUIRED FILES).
+2. If desired, place optional files and/or folders beside the script (see subheader OPTIONAL FILES). Remember that some options have dependencies. Ensure that the chronology file has correctly formatted object/document IDs and that the folder structure is correct.
 3. Run MXMLM2 via python (python "MXMLM2.py"). The script SHOULD take care of installing required packages on its own.
-4. The resulting CMIF file is placed in the output subfolder upon script completion, as well as numerous other data sets.
+4. The resulting CMIF files and JSON/CSV data sets are placed in the same folder as the script upon completion.
 
 ## Known bugs and issues
-The script does not fetch external UIDs. This would entail using the VIAF API to get IDs on everyone - which is fine. But you'd have to make sure that it's the *correct* IDs, which is.. difficult to do automatically, and time-consuming to do manually.
+The script does not fetch external UIDs. This would entail using the VIAF API to get IDs on everyone - which is fine. But you'd have to make sure that it's the *correct* IDs, which can pose a considerable challenge to do automatically, and time-consuming to do manually.
 
 The script does not fetch a UID for placenames at time of writing. The CMIF documentation suggests Geonames as an acceptable source of placename UIDs.
 
 The script does not evaluate whether a given date is "certain" or not beyond applying a date range or an "exact" date. It assumes that the dates provided are certain enough (when they form valid dates).
 
-When run without changes, MM_K0279 registers its date twice. This is because the item in question has "<date type="year" when="1937-04-23">23.04.1937</date>" registered its full date in the @when attribute of the year element. Cause is erroneous data entry. I have corrected this error in the provided files, but the user is advised to change their own files to not imply that a year-month-day date is a year.
+When run as-is, MM_K0279 registers its date twice. This is because the item in question has registered its full date in the @when attribute of the year element ("<date type="year" when="1937-04-23">23.04.1937</date>"). I have corrected this error in the provided files, but the user is advised to change their own files to not imply that a year-month-day date is a year.
+
+If you run into any other errors or issues, please let me know.
