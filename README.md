@@ -59,7 +59,7 @@ You'll also need Python - it's been tested with a normal Anaconda install and wo
 
 ### Optional files
 #### Chronology
-MXMLM Preprocessor searches for and will use a file named Kronologi_Munchs_brev with the .xlsx filetype if it exists in the same folder as the script (or the source subfolder it creates). As long as the file contains the exact phrase Kronologi_Munchs_brev and is .xlsx, it'll be found (example: Kronologi_Munchs_brev_20220831.xlsx WILL be found, while Kronologi_brev.xlsx will NOT be found). If there are multiple files matching the criteria, the last modified file will be used (possibly Windows-dependent).
+MXMLM Preprocessor searches for and will use a file named Kronologi_Munchs_brev with the .xlsx filetype if it exists in the same folder as the script. As long as the file contains the exact phrase Kronologi_Munchs_brev and is .xlsx, it'll be found (example: Kronologi_Munchs_brev_20220831.xlsx WILL be found, while Kronologi_brev.xlsx will NOT be found). If there are multiple files matching the criteria, the last modified file will be used (possibly Windows-dependent).
 
 If a chronology file is found, the script will index all letters included and replace the dates found in the register/correspondence file with the dates found in the chronology file if such a replacement is possible.
 
